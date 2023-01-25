@@ -3,8 +3,8 @@ import pandas as pd
 
 
 df_list = []
-df_list.append(pd.read_csv('funds.csv'))
-df = pd.read_csv('funds_data.csv')
+df_list.append(pd.read_csv('raw/funds.csv'))
+df = pd.read_csv('raw/funds_data.csv')
 df_list.append(df)
 
 json_cols = ['cashDividends', 'subscriptions', 'stockDividends']
@@ -33,8 +33,8 @@ for i, df in enumerate(df_list):
         if c not in df.columns or df[c].dtype != 'object':
             continue
         
-        df[c] = df[c].str.replace('.', '', regex=False).replace(',', '.')
-        df[c] = pd.to_numeric(df[c], errors='coerce')
+        df[c] = df[c].str.replace('.', '', regex=False).str.replace(',', '.')
+        df[c] = pd.to_numeric(df[c], errors='raise')
     
     for c in DT_COLS:
         if c not in df.columns:
